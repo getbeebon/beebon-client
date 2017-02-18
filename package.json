@@ -1,0 +1,29 @@
+{
+  "name": "beebon-client",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --reporter spec test/*-test.js "
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/getbeebon/beebon-client.git"
+  },
+  "author": "Sergey Dmitriev <antirek@yandex.ru>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/getbeebon/beebon-client/issues"
+  },
+  "homepage": "https://github.com/getbeebon/beebon-client#readme",
+  "dependencies": {
+    "minimalistic-assert": "^1.0.0",
+    "request": "^2.79.0",
+    "request-promise": "^4.1.1"
+  },
+  "devDependencies": {
+    "body-parser": "^1.16.1",
+    "express": "^4.14.1",
+    "mocha": "^3.2.0"
+  }
+}
