@@ -11,7 +11,7 @@ var beebon = new BeebonClient({
     collection: 'main'
 });
 
-beebon.send({name: 'vasya', type: 'super'})
+beebon.log({name: 'vasya', type: 'super'})
     .then(function(data){ 
         console.log(data) 
     })
