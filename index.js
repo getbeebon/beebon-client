@@ -11,9 +11,9 @@ var Client = function (config) {
     var port = config.port || 3101;
     var collection = config.collection;
 
-    var uri = protocol + '://' + host + ':' + port + '/api/key/' + collection;
+    //var uri = protocol + '://' + host + ':' + port + '/api/key/' + collection;
 
-    var send = function (data, tag = null) {
+    var send = function (uri, data, tag = null) {
 
         var fullurl = tag ? uri + '/tag/' + tag : uri;
         var options = {
@@ -25,8 +25,19 @@ var Client = function (config) {
         return rp(options);
     };
 
+    var log = function (data, tag) {
+        var uri = protocol + '://' + host + ':' + port + '/api/log/' + collection;
+        return send(uri, data, tag);
+    };
+
+    var task = function (data, tag) {
+        var uri = protocol + '://' + host + ':' + port + '/api/task/' + collection;
+        return send(uri, data, tag);
+    };
+
     return {
-        send: send
+        log: log,
+        task: task
     };
 };
 
