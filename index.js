@@ -2,6 +2,7 @@
 
 var rp = require('request-promise');
 var assert = require('minimalistic-assert');
+var fs = require('fs');
 
 var Client = function (config) {
     assert(config.collection);
@@ -34,10 +35,20 @@ var Client = function (config) {
         var uri = protocol + '://' + host + ':' + port + '/api/task/' + collection;
         return send(uri, data, tag);
     };
+    var file = function (filepath) {
+        var url = protocol + '://' + host + ':' + port + '/api/file/';
+        return rp({
+            url: url,
+            formData: {
+                attachments: [fs.createReadStream(filepath)]
+            }
+        })
+    };
 
     return {
         log: log,
-        task: task
+        task: task,
+        file: file
     };
 };
 
