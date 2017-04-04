@@ -38,9 +38,10 @@ var Client = function (config) {
     var file = function (filepath) {
         var url = protocol + '://' + host + ':' + port + '/api/file/';
         return rp({
+            method: 'POST',
             url: url,
             formData: {
-                attachments: [fs.createReadStream(filepath)]
+                file: fs.createReadStream(filepath)
             }
         })
     };
