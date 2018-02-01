@@ -5,38 +5,45 @@ var assert = require('minimalistic-assert');
 var fs = require('fs');
 
 var Client = function (config) {
-    assert(config.collection);
+    assert(config.url);
 
-    var protocol = config.protocol || 'http';
-    var host = config.host || 'localhost';
-    var port = config.port || 3101;
-    var collection = config.collection;
+    var baseUrl = config.url;
+    var app = config.app || null;
 
-    //var uri = protocol + '://' + host + ':' + port + '/api/key/' + collection;
-
-    var send = function (uri, data, tag = null) {
-
-        var fullurl = tag ? uri + '/tag/' + tag : uri;
+    var send = function (uri, data) {
         var options = {
             method: 'POST',
             body: data,
-            uri: fullurl,
-            json: true // Automatically stringifies the body to JSON
+            uri: uri,
+            json: true
         };
         return rp(options);
     };
 
-    var log = function (data, tag) {
-        var uri = protocol + '://' + host + ':' + port + '/api/log/' + collection;
-        return send(uri, data, tag);
+    var prepareData = (data) => {
+        if (app) {
+            var mergedOrigin = Object.assign({}, data.origin, {app: app});
+            data['origin'] = mergedOrigin;
+        }
+        return data;
+    }
+
+    var log = function (key, data) {
+        var pdata = prepareData(data);
+        console.log('pdata', pdata);
+        var uri = baseUrl + '/api/log/' + key;
+        return send(uri, pdata);
     };
 
-    var task = function (data, tag) {
-        var uri = protocol + '://' + host + ':' + port + '/api/task/' + collection;
-        return send(uri, data, tag);
+    var task = function (key, data) {
+        var pdata = prepareData(data);
+        console.log('pdata', pdata);
+        var uri = baseUrl + '/api/task/' + key;
+        return send(uri, data);
     };
+
     var file = function (filepath) {
-        var url = protocol + '://' + host + ':' + port + '/api/file/';
+        var url = baseUrl + '/api/file/';
         return rp({
             method: 'POST',
             url: url,

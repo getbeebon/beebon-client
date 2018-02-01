@@ -7,11 +7,11 @@
 var BeebonClient = require('beebon-client');
 
 var beebon = new BeebonClient({
-    host: '192.168.1.23',
-    collection: 'main'
+    url: 'http://beebon.mobilon.ru',
+    app: 'main'
 });
 
-beebon.log({name: 'vasya', type: 'super'})
+beebon.log('main', {name: 'vasya', type: 'super'})
     .then(function(data){ 
         console.log(data) 
     })

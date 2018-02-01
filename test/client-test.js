@@ -5,16 +5,15 @@ var bodyParser = require('body-parser');
 
 var Client = require('../');
 
-describe('Beebon client', function () {
+describe('Beebon client', () => {
     var app = express();
     app.use(bodyParser.json());
 
-    app.post('/api/log/main', function (req, res) {
+    app.post('/api/log/email', (req, res) => {
         res.send(JSON.stringify(req.body));
     });
 
-    app.post('/api/log/main/tag/init', function (req, res){
-        req.body.tag = 'init';
+    app.post('/api/task/sms', (req, res) => {
         res.send(JSON.stringify(req.body))
     });
 
@@ -22,23 +21,29 @@ describe('Beebon client', function () {
     app.listen(port);
 
     var client = new Client({
-        collection: 'main'
+        url: 'http://localhost:3101',
+        app: 'qwqw'
     });
 
-    it('log to server data', function (done){
-        client.log({name: 'vasya', type: 'super'})
-            .then(function(data) {
+    it('log to server data', (done) => {
+        client.log('email', {name: 'vasya', type: 'super'})
+            .then((data) => {
                 assert.equal('vasya', data.name);
                 assert.equal('super', data.type);
+                assert.equal('qwqw', data.origin.app);                
                 done();
             });
     });
 
-    it('log to server data with tag', function (done){
-        client.log({name: 'vasya', type: 'super'}, 'init')
-            .then(function(data) {
-                assert.equal('init', data.tag);
+    it('task to server data', (done) => {
+        client.task('sms', {name: 'vasya', type: 'super', origin: {tag: 'tag'}})
+            .then((data) => {
+                assert.equal('vasya', data.name);
+                assert.equal('super', data.type);
+                assert.equal('qwqw', data.origin.app);
+                assert.equal('tag', data.origin.tag);
                 done();
             });
     });
+
 });
